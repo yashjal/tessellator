@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(Assignment2)
+project(Tesselations)
 
 ### Output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
@@ -19,22 +19,22 @@ endif()
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 ### Include Eigen for linear algebra
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../ext/eigen")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/ext/eigen")
 
 ### Compile GLFW3 statically
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_INSTALL OFF CACHE BOOL " " FORCE)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw" "glfw")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw/include")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/ext/glfw" "glfw")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/ext/glfw/include")
 set(LIBRARIES "glfw" ${GLFW_LIBRARIES})
 
 ### On windows, you also need glew
 if((UNIX AND NOT APPLE) OR WIN32)
   set(GLEW_INSTALL OFF CACHE BOOL " " FORCE)
-  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../ext/glew" "glew")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../ext/glew/include")
+  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/ext/glew" "glew")
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/ext/glew/include")
   list(APPEND LIBRARIES "glew")
 endif()
 
