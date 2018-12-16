@@ -10,17 +10,10 @@ install:
   - cinstall: python
 build_script:
   - echo Running cmake...
-  - cd c:\projects\cg\Assignment_1
+  - cd c:\projects\cg
   - mkdir build
   - cd build
   - cmake -G "Visual Studio 14 2015 Win64" ../
   - set MSBuildLogger="C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - set MSBuildOptions=/v:m /p:Configuration=Debug /logger:%MSBuildLogger%
   - msbuild %MSBuildOptions% Assignment1.sln
-  - cd c:\projects\cg\Assignment_2
-  - mkdir build
-  - cd build
-  - cmake -G "Visual Studio 14 2015 Win64" ../
-  - set MSBuildLogger="C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-  - set MSBuildOptions=/v:m /p:Configuration=Debug /logger:%MSBuildLogger%
-  - msbuild %MSBuildOptions% Assignment2.sln
