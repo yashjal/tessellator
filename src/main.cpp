@@ -1296,18 +1296,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             case GLFW_KEY_X:
             	if (trMode) {
             		setMode(false,false,true,false,false,false,false,false,false,false,false,false);
-            		//colorV();
+            		colorV();
             	} else if (sqMode) {
             		setMode(false,false,false,false,false,false,true,false,false,false,false,false);
             		colorV();
             	} else if (hexMode) {
             		setMode(false,false,false,false,false,false,false,false,false,false,true,false);
+            		colorV();
             	} else if (lagTrMode) {
             		setMode(false,false,false,true,false,false,false,false,false,false,false,false);
+            		colorV();
             	} else if (lagSqMode) {
             		setMode(false,false,false,false,false,false,false,true,false,false,false,false);
+            		colorV();
             	} else if (lagHexMode) {
             		setMode(false,false,false,false,false,false,false,false,false,false,false,true);
+            		colorV();
             	}
             	break;
             case GLFW_KEY_EQUAL:
@@ -1512,8 +1516,6 @@ int main(void)
 	}
 
 	t_ar << 0, 0.25, 0.5, 0.75, 1;
-
-
     view.setIdentity();
     model.setIdentity();
 
@@ -1583,7 +1585,7 @@ int main(void)
         glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
 
         // Clear the framebuffer
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 		if (trMode) {
@@ -1614,14 +1616,16 @@ int main(void)
 			glDrawArrays(GL_LINE_STRIP, 0, 3*NUM_POINTS*LOD+1);
 
 		} else if (finalMode) {
-			glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 			
 			//horizontal
 			for (int i=0; i<19; i++) {
 				model(0,3) = tr_len*(9-i);
 				model(1,3) = 0;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 3*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			starty = sqrt(3)*0.5*tr_len+5*sqrt(3)*tr_len;
@@ -1632,7 +1636,10 @@ int main(void)
 					model(0,3) = start-i*tr_len;
 					model(1,3) = starty-j*sqrt(3)*tr_len;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1642,14 +1649,20 @@ int main(void)
 					model(0,3) = tr_len*(9-i);
 					model(1,3) = sqrt(3)*tr_len*(j+1);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 				//downdown
 				for (int i=0; i<19; i++) {
 					model(0,3) = tr_len*(9-i);
 					model(1,3) = -sqrt(3)*tr_len*(j+1);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1681,14 +1694,16 @@ int main(void)
 			glDrawArrays(GL_LINE_STRIP, 0, 3*(NUM_POINTS-1)*LOD+1);
 
 		} else if (finalLagMode) {
-			glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 			
 			//horizontal
 			for (int i=0; i<19; i++) {
 				model(0,3) = tr_len*(9-i);
 				model(1,3) = 0;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 3*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			starty = sqrt(3)*0.5*tr_len+5*sqrt(3)*tr_len;
@@ -1699,7 +1714,10 @@ int main(void)
 					model(0,3) = start-i*tr_len;
 					model(1,3) = starty-j*sqrt(3)*tr_len;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1709,14 +1727,20 @@ int main(void)
 					model(0,3) = tr_len*(9-i);
 					model(1,3) = sqrt(3)*tr_len*(j+1);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 				//downdown
 				for (int i=0; i<19; i++) {
 					model(0,3) = tr_len*(9-i);
 					model(1,3) = -sqrt(3)*tr_len*(j+1);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 3*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.5,0.1,0.1);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1737,17 +1761,15 @@ int main(void)
 			glDrawArrays(GL_LINE_STRIP, 0, 4*NUM_POINTS*LOD+1);
 		} else if (finalsqMode) {
 
-			glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
-
-			//COLOR/TRIANGULATION
-			glDrawArrays(GL_LINE_LOOP, prevCols, numCols);
-
 			//horizontal
 			for (int i=0; i<19; i++) {
 				model(0,3) = 16-2*i;
 				model(1,3) = 0;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 4*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			for (int j=0; j<9; j++) {		
@@ -1756,7 +1778,10 @@ int main(void)
 					model(0,3) = 15-2*i;
 					model(1,3) = 7-2*j;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 4*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1766,7 +1791,10 @@ int main(void)
 					model(0,3) = 16-2*i;
 					model(1,3) = 8-2*j;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 4*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1788,14 +1816,15 @@ int main(void)
 			glDrawArrays(GL_LINE_STRIP, 0, 4*(NUM_POINTS-1)*LOD+1);
 		} else if (finalLagSqMode) {
 
-			glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
-
 			//horizontal
 			for (int i=0; i<19; i++) {
 				model(0,3) = 16-2*i;
 				model(1,3) = 0;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 4*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			for (int j=0; j<9; j++) {		
@@ -1804,7 +1833,10 @@ int main(void)
 					model(0,3) = 15-2*i;
 					model(1,3) = 7-2*j;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 4*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 
 			}
@@ -1815,7 +1847,10 @@ int main(void)
 					model(0,3) = 16-2*i;
 					model(1,3) = 8-2*j;
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 4*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),0.7,0.0,0.0);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
@@ -1843,41 +1878,58 @@ int main(void)
 
 			//horizontal
 			for (int i=0; i<19; i++) {
-				//glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = 0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = 0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = -sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				//glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = -0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = -0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			//up
@@ -1885,41 +1937,58 @@ int main(void)
 			offset = 0.75;
 			for (int j=0; j<2; j++) {
 				for (int i=0; i<19; i++) {
-					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 					float deg1 = 120*(PI/180);
 					model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty+(j*3*0.5*sqrt(3))+0.25*sqrt(3);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty-sqrt(3)*0.5+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-					glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 					float deg2 = -120*(PI/180);
 					model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty+sqrt(3)*0.5+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 			//down
@@ -1927,122 +1996,173 @@ int main(void)
 			offset = 0.75;
 			for (int j=0; j<2; j++) {
 				for (int i=0; i<19; i++) {
-					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 					float deg1 = 120*(PI/180);
 					model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty-sqrt(3)*0.5-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-					glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 					float deg2 = -120*(PI/180);
 					model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty+sqrt(3)*0.5-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
 			//upup
 			starty = 3*0.5*sqrt(3);
 			for (int i=0; i<19; i++) {
-				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty-sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty+sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			//downdown
 			starty = -3*0.5*sqrt(3);
 			for (int i=0; i<19; i++) {
-				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty-sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty+sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*NUM_POINTS*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 		} else if (lagHexMode) {
@@ -2068,41 +2188,58 @@ int main(void)
 
 			//horizontal
 			for (int i=0; i<19; i++) {
-				//glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = 0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = 0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = -sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				//glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = -0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = -0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			//up
@@ -2110,41 +2247,58 @@ int main(void)
 			offset = 0.75;
 			for (int j=0; j<2; j++) {
 				for (int i=0; i<19; i++) {
-					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 					float deg1 = 120*(PI/180);
 					model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty+(j*3*0.5*sqrt(3))+0.25*sqrt(3);
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty-sqrt(3)*0.5+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-					glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 					float deg2 = -120*(PI/180);
 					model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty+sqrt(3)*0.5+(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 			//down
@@ -2152,122 +2306,173 @@ int main(void)
 			offset = 0.75;
 			for (int j=0; j<2; j++) {
 				for (int i=0; i<19; i++) {
-					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 					float deg1 = 120*(PI/180);
 					model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty+0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty-sqrt(3)*0.5-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-					glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 					float deg2 = -120*(PI/180);
 					model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 					model(0,3) = offset-0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0.75+1.5*9-1.5*i;
 					model(1,3) = starty-0.25*sqrt(3)-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 					model(0,3) = offset+0+1.5*9-1.5*i;
 					model(1,3) = starty+sqrt(3)*0.5-(j*3*0.5*sqrt(3));
 					glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+					glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 					glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+					glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+					glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 				}
 			}
 
 			//upup
 			starty = 3*0.5*sqrt(3);
 			for (int i=0; i<19; i++) {
-				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty-sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty+sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 			//downdown
 			starty = -3*0.5*sqrt(3);
 			for (int i=0; i<19; i++) {
-				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.0);
+
 				float deg1 = 120*(PI/180);
 				model.block(0,0,2,2) << cos(deg1), -sin(deg1), sin(deg1), cos(deg1);
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty+0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty-sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,1.0,0.2);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
-				glUniform3f(program.uniform("triangleColor"),0.0,0.0,1.0);
 				float deg2 = -120*(PI/180);
 				model.block(0,0,2,2) << cos(deg2), -sin(deg2), sin(deg2), cos(deg2);
 				model(0,3) = -0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0.75+1.5*9-1.5*i;
 				model(1,3) = starty-0.25*sqrt(3);
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 
 				model(0,3) = 0+1.5*9-1.5*i;
 				model(1,3) = starty+sqrt(3)*0.5;
 				glUniformMatrix4fv(program.uniform("model"), 1, GL_FALSE, model.data());
+				glUniform3f(program.uniform("triangleColor"),0.0,0.0,0.0);
 				glDrawArrays(GL_LINE_STRIP, 0, 6*(NUM_POINTS-1)*LOD+1);
+				glUniform3f(program.uniform("triangleColor"),1.0,0.0,0.3);
+				glDrawArrays(GL_TRIANGLES, prevCols, numCols);
 			}
 
 		}
